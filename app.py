@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from currency_exchange import CurrencyExchange
 
 app = Flask(__name__)
@@ -6,7 +6,7 @@ app = Flask(__name__)
 currencyEx = CurrencyExchange()
 
 # get the exchange rate between currencies
-@app.route('/exchange_rate', methods=['POST'])
+@app.route('/exchange_rate')
 def getRate():
 
 	base_c = request.json['base_currency'].upper()
@@ -15,7 +15,7 @@ def getRate():
 
 	return jsonify({"query": exRate_query})
 
-@app.route('/exchange_currency', methods=['POST'])
+@app.route('/exchange_currency')
 def exchangeCurrency():
 
 	base_c = request.json['base_currency'].upper()

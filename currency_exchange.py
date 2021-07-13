@@ -1,4 +1,5 @@
 from threading import Lock
+from flask import jsonify, make_response, abort
 
 class CurrencyExchange():
 
@@ -25,7 +26,11 @@ class CurrencyExchange():
 
 		# assure currencies chosen are available
 		if not (base_currency in self.rates and quote_currency in self.rates):
-			return {"message": "Exchange between those currencies is not available"}
+			abort(make_response(jsonify({
+				"result": "failure",
+				"message": "Exchange between those currencies is not available",
+				"error": 400
+				}), 400))
 
 		fee = 0.0
 		rate = 0.0
@@ -78,7 +83,11 @@ class CurrencyExchange():
 
 			return {"final_amount": final_amount, "quote_currency": quote_currency}
 		else:
-			return { "message": "There is no enough amount of money"}
+			abort(make_response(jsonify({
+				"result": "failure",
+				"message": "There is no enough amount of money",
+				"error": 404
+			}), 404))
 
 
 
